@@ -4,7 +4,7 @@ import 'package:flutter_application/core/enums/user_type_enum.dart';
 import 'package:flutter_application/core/functions/navigation.dart';
 import 'package:flutter_application/core/utils/colors.dart';
 import 'package:flutter_application/core/utils/text_style.dart';
-import 'package:flutter_application/feature/login/presentation/view/login_view.dart';
+import 'package:flutter_application/feature/auth/login/presentation/view/login_view.dart';
 import 'package:gap/gap.dart';
 
 class WelcomeView extends StatelessWidget {
