@@ -1,6 +1,5 @@
 // feature/auth/login/data/doctor_model.dart
 
-
 class DoctorModel {
   String? uid;
   String? name;
@@ -13,7 +12,7 @@ class DoctorModel {
   String? closeHour;
   String? bio;
   String? image;
-  int? rating;
+  dynamic? rating;
   DoctorModel({
     this.uid,
     this.name,

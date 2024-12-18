@@ -11,8 +11,9 @@ import 'package:flutter_application/core/utils/colors.dart';
 import 'package:flutter_application/core/utils/text_style.dart';
 import 'package:flutter_application/core/widgets/custom_button.dart';
 import 'package:flutter_application/feature/auth/login/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_application/feature/auth/login/presentation/view/doctor_register_view.dart';
 import 'package:flutter_application/feature/auth/login/presentation/view/signup_view.dart';
-import 'package:flutter_application/feature/home_view.dart';
+import 'package:flutter_application/feature/patient/presentation/views/nav_bar/nav_bar_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
@@ -54,6 +55,11 @@ class _LoginViewState extends State<LoginView> {
             } else if (state is LoginSuccessstate) {
               Navigator.pop(context);
               log("success");
+              if (state.userType == UserType.doctor.toString()) {
+                pushReplacement(context, const DoctorRegisterView());
+              } else {
+                pushReplacement(context, const NavBarScreen());
+              }
             } else if (state is AuthErrorState) {
               Navigator.pop(context);
               showErrorDialog(context, state.error);
@@ -120,7 +126,7 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       controller: passwordController,
                       validator: (value) {
-                        if (!passwordValidation(value)) {
+                        if (passwordValidation(value)) {
                           return 'كلمة السر غير صحيحة';
                         }
                         if (value!.isEmpty) return 'من فضلك ادخل كلمة السر';
@@ -139,10 +145,12 @@ class _LoginViewState extends State<LoginView> {
                     CustomButton(
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          context.read<AuthBloc>().add(loginEvent(
-                              email: emailController.text,
-                              password: passwordController.text));
-                        //push(context, const HomeView());
+                          context.read<AuthBloc>().add(
+                                loginEvent(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                ),
+                              );
                         }
                       },
                       text: "تسجيل الدخول",

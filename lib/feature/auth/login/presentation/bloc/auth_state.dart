@@ -14,7 +14,10 @@ class RegisterSuccessstate extends AuthState {}
 //login
 class LoginLoadingstate extends AuthState {}
 
-class LoginSuccessstate extends AuthState {}
+class LoginSuccessstate extends AuthState {
+  final String userType;
+  LoginSuccessstate({required this.userType});
+}
 
 //update doctor profile
 class DoctorRegisterationLoadingstate extends AuthState {}

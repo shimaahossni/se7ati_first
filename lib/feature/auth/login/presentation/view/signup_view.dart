@@ -12,6 +12,7 @@ import 'package:flutter_application/core/widgets/custom_button.dart';
 import 'package:flutter_application/feature/auth/login/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_application/feature/auth/login/presentation/view/doctor_register_view.dart';
 import 'package:flutter_application/feature/auth/login/presentation/view/login_view.dart';
+import 'package:flutter_application/feature/patient/presentation/views/nav_bar/nav_bar_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
@@ -44,7 +45,9 @@ class _SignupViewState extends State<SignupView> {
           if (state is RegisterSuccessstate) {
             if (widget.userType == UserType.doctor) {
               pushAndRemoveUntil(context, const DoctorRegisterView());
-            } else {}
+            } else {
+              pushReplacement(context, const NavBarScreen());
+            }
           } else if (state is AuthErrorState) {
             Navigator.pop(context);
             showErrorDialog(context, state.error);

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application/core/functions/dialogs.dart';
 import 'package:flutter_application/core/functions/navigation.dart';
 import 'package:flutter_application/core/utils/colors.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_application/feature/auth/login/presentation/widget/docto
 import 'package:flutter_application/feature/auth/login/presentation/widget/doctor_dropdownlist.dart';
 import 'package:flutter_application/feature/auth/login/presentation/widget/doctor_register_button.dart';
 import 'package:flutter_application/feature/auth/login/presentation/widget/doctor_text.dart';
+import 'package:flutter_application/feature/doctor/presentation/doctor_home_reg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -33,8 +35,8 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
   String _specialization = specialization[0];
 
   late String _startTime =
-      DateFormat('hh').format(DateTime(2023, 9, 7, 10, 00));
-  late String _endTime = DateFormat('hh').format(DateTime(2023, 9, 7, 22, 00));
+      DateFormat('hh').format(DateTime(2023, 9, 7, 12, 00));
+  late String _endTime = DateFormat('hh').format(DateTime(2023, 9, 7, 23, 00));
 
   @override
   void initState() {
@@ -42,7 +44,6 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
     _getUser();
   }
 
-  String? _imagePath;
   File? file;
   String? profileUrl;
 
@@ -52,7 +53,7 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
     userID = FirebaseAuth.instance.currentUser!.uid;
   }
 
-  Future<String> uploadImageToFireStore(File image) async {
+  Future<String> uploadImageToFirebaseStorage(File image) async {
     Reference ref =
         FirebaseStorage.instanceFor(bucket: 'gs://se7ety-119.appspot.com')
             .ref()
@@ -70,7 +71,6 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
 
     if (pickedFile != null) {
       setState(() {
-        _imagePath = pickedFile.path;
         file = File(pickedFile.path);
       });
     }
@@ -82,7 +82,7 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
       listener: (context, state) {
         if (state is DoctorRegisterationSuccessstate) {
           Navigator.pop(context);
-          pushReplacement(context, Navigator());
+          pushReplacement(context, const DoctorHomeReg());
         } else if (state is AuthErrorState) {
           Navigator.pop(context);
           showErrorDialog(context, state.error);
@@ -110,14 +110,14 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
                       Stack(
                         alignment: Alignment.bottomRight,
                         children: [
+                          //-------------------------------------------upload image
                           CircleAvatar(
                             radius: 50,
                             child: CircleAvatar(
                               backgroundColor: AppColors.accentColor,
                               radius: 60,
-                              backgroundImage: (_imagePath != null)
-                                  ? FileImage(File(_imagePath!))
-                                      as ImageProvider
+                              backgroundImage: (file != null)
+                                  ? FileImage(file!) as ImageProvider
                                   : const AssetImage('assets/doc.png'),
                             ),
                           ),
@@ -141,12 +141,11 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
                         padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
                         child: Row(
                           children: [
-                            //التخصص
+                            //-------------------------------------------التخصص
                             DoctorText(text: "التخصص"),
                           ],
                         ),
                       ),
-                      // التخصص---------------
                       DoctorDropDownList(
                         value: _specialization,
                         onChanged: (dynamic newValue) {
@@ -162,7 +161,7 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
                         }).toList(),
                       ),
 
-                      //النبذة التعريفية
+                      //-------------------------------------------النبذة التعريفية
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -186,6 +185,7 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
                         maxlines: 5,
                       ),
 
+                      //-------------------------------------------عنوان العيادة
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -196,7 +196,7 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
                       ),
                       DoctorContainer(
                         bioController: _address,
-                        hinttext: '5 شارع مصدق - الدقي - الجيزة',
+                        hinttext: ' شارع ابي رضا المقري - الرياض - الرياض',
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'من فضلك ادخل عنوان العيادة';
@@ -206,6 +206,7 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
                         },
                       ),
 
+                      //------------------------------------------- ساعات العمل
                       Row(
                         children: [
                           Expanded(
@@ -232,7 +233,7 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
                       ),
                       Row(
                         children: [
-                          // ---------- Start Time ----------------
+                          //  Start Time
                           Expanded(
                             child: DoctorContainer(
                               hinttext: _startTime,
@@ -250,7 +251,7 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
                             width: 10,
                           ),
 
-                          // ---------- End Time ----------------
+                          //  End Time
                           Expanded(
                             child: DoctorContainer(
                               hinttext: _endTime,
@@ -276,7 +277,13 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
                       ),
                       DoctorContainer(
                         bioController: _phone1,
-                        hinttext: '+20xxxxxxxxxx',
+                        hinttext: '20xxxxxxxxxx+',
+                        keyboardType: TextInputType.phone,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          //FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          LengthLimitingTextInputFormatter(12),
+                        ],
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'من فضلك ادخل الرقم';
@@ -296,7 +303,13 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
                       ),
                       DoctorContainer(
                         bioController: _phone2,
-                        hinttext: '+20xxxxxxxxxx',
+                        hinttext: '20xxxxxxxxxx+',
+                        keyboardType: TextInputType.phone,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          //FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                          LengthLimitingTextInputFormatter(12),
+                        ],
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'من فضلك ادخل الرقم';
@@ -316,11 +329,11 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
           text: 'تسجيل',
           onPressed: () async {
             if (_formKey.currentState!.validate() && file != null) {
-              profileUrl = await uploadImageToFireStore(file!);
+              profileUrl = await uploadImageToFirebaseStorage(file!);
               context.read<AuthBloc>().add(UpdateDoctorDataEvent(
                       doctorModel: DoctorModel(
-                    uid: userID,
-                    image: profileUrl,
+                    uid: userID ?? '',
+                    image: profileUrl ?? '',
                     phone1: _phone1.text,
                     phone2: _phone2.text,
                     address: _address.text,
@@ -332,7 +345,7 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('من فضلك قم بتحميل صورة العيادة'),
+                  content: Text('من فضلك قم بتحميل صورة الملف الشخصي'),
                 ),
               );
             }
