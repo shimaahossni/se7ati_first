@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/core/utils/colors.dart';
 import 'package:flutter_application/core/utils/text_style.dart';
 import 'package:flutter_application/feature/patient/presentation/views/appointment/views/patient_appointment.dart';
-import 'package:flutter_application/feature/patient/presentation/views/home/views/home.dart';
+import 'package:flutter_application/feature/patient/presentation/views/home/oresentation/views/home.dart';
 import 'package:flutter_application/feature/patient/presentation/views/profile/presentation/views/patient_profile_screen.dart';
 import 'package:flutter_application/feature/patient/presentation/views/search/views/patient_search.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';

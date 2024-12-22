@@ -1,4 +1,4 @@
-// feature/patient/presentation/views/profile/presentation/views/user_setting.dart
+// feature/doctor/presentation/profile/page/user_setting.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/functions/navigation.dart';
@@ -6,7 +6,8 @@ import 'package:flutter_application/core/utils/colors.dart';
 import 'package:flutter_application/core/utils/text_style.dart';
 import 'package:flutter_application/core/widgets/settings_tile.dart';
 import 'package:flutter_application/feature/intro/welcome/presentation/welcome_view.dart';
-import 'package:flutter_application/feature/patient/presentation/views/profile/presentation/views/user_details.dart';
+import 'package:flutter_application/feature/doctor/presentation/profile/page/new_password_doctor.dart';
+import 'package:flutter_application/feature/doctor/presentation/profile/page/user_details.dart';
 
 class UserSettings extends StatefulWidget {
   const UserSettings({super.key});
@@ -16,26 +17,20 @@ class UserSettings extends StatefulWidget {
 }
 
 class _UserSettingsState extends State<UserSettings> {
-    Future _signOut() async {
+  Future _signOut() async {
     await FirebaseAuth.instance.signOut();
   }
+
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: IconButton(
-            splashRadius: 25,
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.whiteColor,
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ),
+        centerTitle: true,
+        backgroundColor: AppColors.blueColor,
+        foregroundColor: AppColors.whiteColor,
         title: const Text(
           'الاعدادات',
+          style: TextStyle(color: AppColors.whiteColor),
         ),
       ),
       body: Padding(
@@ -52,7 +47,9 @@ class _UserSettingsState extends State<UserSettings> {
             SettingsListItem(
               icon: Icons.security_rounded,
               text: 'كلمة السر',
-              onTap: () {},
+              onTap: () {
+                push(context, NewPasswordDoctor());
+              },
             ),
             SettingsListItem(
               icon: Icons.notifications_active_rounded,
@@ -91,7 +88,8 @@ class _UserSettingsState extends State<UserSettings> {
                 },
                 child: Text(
                   'تسجل خروج',
-                  style: getTitleStyle(color: AppColors.whiteColor, fontSize: 14),
+                  style:
+                      getTitleStyle(color: AppColors.whiteColor, fontSize: 14),
                 ),
               ),
             ),
@@ -99,6 +97,5 @@ class _UserSettingsState extends State<UserSettings> {
         ),
       ),
     );
-  
   }
 }

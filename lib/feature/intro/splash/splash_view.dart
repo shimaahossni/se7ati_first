@@ -32,9 +32,9 @@ class _SplashViewState extends State<SplashView> {
 
       if (user != null) {
         //user is doctor or patient
-        if (user!.photoURL == 'doctor') {
+        if (user?.photoURL == 'doctor') {
           pushReplacement(context, const DoctorHomeReg());
-        } else {
+        } else if (user?.photoURL == 'patient') {
           pushReplacement(context, const NavBarScreen());
         }
       } else {

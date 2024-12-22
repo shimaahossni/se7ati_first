@@ -1,4 +1,4 @@
-// feature/patient/presentation/views/profile/presentation/widget/appointment_history.dart
+// feature/doctor/presentation/profile/widgets/appointments_list.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ class MyAppointmentsHistory extends StatefulWidget {
   const MyAppointmentsHistory({super.key});
 
   @override
-  State<MyAppointmentsHistory> createState() => _MyAppointmentsHistoryState();
+  _MyAppointmentsHistoryState createState() => _MyAppointmentsHistoryState();
 }
 
 class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
@@ -65,8 +65,7 @@ class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
                 deleteAppointment(
                   docID,
                 );
-                // Navigator.of(context).pop();
-                Navigator.pop(context);
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -98,23 +97,17 @@ class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
   void initState() {
     super.initState();
     _getUser();
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    if (user?.email == null) {
-      return const Center(
-        child: Text("Please log in to view your appointments."),
-      );
-    }
     return SafeArea(
       child: FutureBuilder(
         future: FirebaseFirestore.instance
             .collection('appointments')
             .doc('appointments')
             .collection('all')
-            .where('patientID', isEqualTo: '${user?.email}')
+            .where('patientID', isEqualTo: '${user!.email}')
             .orderBy('date', descending: false)
             .get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -251,6 +244,18 @@ class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
                                     const SizedBox(
                                       height: 10,
                                     ),
+                                    Row(
+                                      children: [
+                                        const Icon(Icons.location_on_rounded,
+                                            color: AppColors.blueColor, size: 16),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          document['location'],
+                                        ),
+                                      ],
+                                    ),
                                     const SizedBox(
                                       height: 10,
                                     ),
@@ -258,8 +263,7 @@ class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
                                       width: double.infinity,
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                              foregroundColor:
-                                                  AppColors.whiteColor,
+                                              foregroundColor: AppColors.whiteColor,
                                               backgroundColor:
                                                   AppColors.redColor),
                                           onPressed: () {

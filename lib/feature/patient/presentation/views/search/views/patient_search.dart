@@ -18,6 +18,7 @@ class _PatientSearchState extends State<PatientSearch> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor: AppColors.blueColor,
         title: const Text(

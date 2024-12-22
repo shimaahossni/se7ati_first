@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/core/utils/text_style.dart';
 import 'package:flutter_application/core/widgets/doctor_card.dart';
 import 'package:flutter_application/feature/auth/login/data/doctor_model.dart';
-import 'package:flutter_application/feature/patient/presentation/views/home/widget/no_doctor_found.dart';
+import 'package:flutter_application/feature/patient/presentation/views/home/oresentation/widget/no_doctor_found.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SearchList extends StatefulWidget {

@@ -5,7 +5,7 @@ import 'package:flutter_application/core/utils/colors.dart';
 import 'package:flutter_application/core/utils/text_style.dart';
 import 'package:flutter_application/core/widgets/custom_button.dart';
 import 'package:flutter_application/feature/auth/login/data/doctor_model.dart';
-import 'package:flutter_application/feature/patient/presentation/views/appointment/views/booking_screen.dart';
+import 'package:flutter_application/feature/patient/presentation/views/booking/presentation/views/booking_screen.dart';
 import 'package:flutter_application/feature/patient/presentation/views/appointment/views/patient_appointment.dart';
 import 'package:flutter_application/feature/patient/presentation/views/search/widget/icon_tile_widget.dart';
 import 'package:flutter_application/feature/patient/presentation/views/search/widget/tile_widget.dart';

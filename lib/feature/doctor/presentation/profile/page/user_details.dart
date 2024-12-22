@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/core/utils/colors.dart';
 import 'package:flutter_application/core/utils/text_style.dart';
 import 'package:flutter_application/core/widgets/custom_button.dart';
+import 'package:gap/gap.dart';
 
 class UserDetails extends StatefulWidget {
   const UserDetails({super.key});
@@ -21,9 +22,9 @@ class _UserDetailsState extends State<UserDetails> {
     user = _auth.currentUser;
   }
 
-  List labelName = ["الاسم", "رقم الهاتف", "المدينة", "نبذه تعريفية", "العمر"];
+  List labelName = ["الاسم", "رقم الهاتف", "المدينة", "نبذه تعريفية", "التخصص"];
 
-  List value = ["name", "phone", "city", "bio", "age"];
+  List value = ["name", "phone2", "address", "bio", "specialization"];
 
   @override
   void initState() {
@@ -35,24 +36,17 @@ class _UserDetailsState extends State<UserDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: IconButton(
-            splashRadius: 25,
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.whiteColor,
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ),
-        title: const Text('اعدادات الحساب'),
+        centerTitle: true,
+        backgroundColor: AppColors.blueColor,
+        foregroundColor: AppColors.whiteColor,
+        title: const Text('اعدادات الحساب',
+            style: TextStyle(color: AppColors.whiteColor)),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection('patients')
+              .collection('doctors')
               .doc(user!.uid)
               .snapshots(),
           builder: (context, snapshot) {
@@ -99,7 +93,8 @@ class _UserDetailsState extends State<UserDetails> {
                                 TextFormField(
                                   controller: con,
                                   decoration: const InputDecoration(
-                                      filled: true, fillColor: AppColors.whiteColor),
+                                      filled: true,
+                                      fillColor: AppColors.whiteColor),
                                   // decoration: InputDecoration(
                                   //     hintText: value[index]),
                                   validator: (value) {
@@ -145,12 +140,15 @@ class _UserDetailsState extends State<UserDetails> {
                         style: getBodyStyle(
                             fontSize: 14, fontWeight: FontWeight.w600),
                       ),
-                      Text(
-                        userData?[value[index]] == '' ||
-                                userData?[value[index]] == null
-                            ? 'Not Added'
-                            : userData?[value[index]],
-                        style: getBodyStyle(),
+                      Gap(20),
+                      Flexible(
+                        child: Text(
+                          userData?[value[index]] == '' ||
+                                  userData?[value[index]] == null
+                              ? 'Not Added'
+                              : userData?[value[index]],
+                          style: getBodyStyle(),
+                        ),
                       ),
                     ],
                   ),
@@ -163,8 +161,8 @@ class _UserDetailsState extends State<UserDetails> {
     );
   }
 
-   Future<void> updateData(String key, value) async {
-    FirebaseFirestore.instance.collection('patients').doc(user!.uid).update({
+  Future<void> updateData(String key, value) async {
+    FirebaseFirestore.instance.collection('doctors').doc(user!.uid).update({
       key: value,
     });
     if (key == "name") {

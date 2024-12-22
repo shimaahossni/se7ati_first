@@ -1,10 +1,10 @@
-// feature/patient/presentation/views/home/widget/specailize_banner.dart
+// feature/patient/presentation/views/home/oresentation/widget/specailize_banner.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/functions/navigation.dart';
 import 'package:flutter_application/core/utils/text_style.dart';
 import 'package:flutter_application/feature/patient/presentation/views/home/data/cart_list.dart';
-import 'package:flutter_application/feature/patient/presentation/views/home/widget/item_card_widget.dart';
-import 'package:flutter_application/feature/patient/presentation/views/home/widget/specialization_search_screen.dart';
+import 'package:flutter_application/feature/patient/presentation/views/home/oresentation/widget/item_card_widget.dart';
+import 'package:flutter_application/feature/patient/presentation/views/home/oresentation/widget/specialization_search_screen.dart';
 
 class SpecialistsBanner extends StatelessWidget {
   const SpecialistsBanner({super.key});

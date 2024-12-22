@@ -1,10 +1,10 @@
-// feature/patient/presentation/views/home/widget/specialization_search_screen.dart
+// feature/patient/presentation/views/home/oresentation/widget/specialization_search_screen.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/utils/text_style.dart';
 import 'package:flutter_application/core/widgets/doctor_card.dart';
 import 'package:flutter_application/feature/auth/login/data/doctor_model.dart';
-import 'package:flutter_application/feature/patient/presentation/views/home/widget/no_specialization_found.dart';
+import 'package:flutter_application/feature/patient/presentation/views/home/oresentation/widget/no_specialization_found.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SpecializationSearchScreen extends StatefulWidget {

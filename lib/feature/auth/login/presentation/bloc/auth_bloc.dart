@@ -35,6 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         FirebaseFirestore.instance.collection('doctors').doc(user?.uid).set({
           'name': event.name,
           'email': event.email,
+          'password': event.password,
           'image': '',
           'specialization': '',
           'rating': '',
@@ -44,6 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'openHour': '',
           'closeHour': '',
           'uid': user?.uid,
+          'address': '',
         });
       } else {
         FirebaseFirestore.instance.collection('patients').doc(user?.uid).set({
@@ -53,7 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'age': '',
           'phone': '',
           'bio': '',
-          'city': '',
+          'address': '',
           'uid': user?.uid,
         });
       }

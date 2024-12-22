@@ -1,12 +1,12 @@
-// feature/patient/presentation/views/home/views/home.dart
+// feature/patient/presentation/views/home/oresentation/views/home.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/functions/navigation.dart';
 import 'package:flutter_application/core/utils/colors.dart';
 import 'package:flutter_application/core/utils/text_style.dart';
-import 'package:flutter_application/feature/patient/presentation/views/home/widget/home_search_screen.dart';
-import 'package:flutter_application/feature/patient/presentation/views/home/widget/specailize_banner.dart';
-import 'package:flutter_application/feature/patient/presentation/views/home/widget/top_rated_list.dart';
+import 'package:flutter_application/feature/patient/presentation/views/home/oresentation/widget/home_search_screen.dart';
+import 'package:flutter_application/feature/patient/presentation/views/home/oresentation/widget/specailize_banner.dart';
+import 'package:flutter_application/feature/patient/presentation/views/home/oresentation/widget/top_rated_list.dart';
 import 'package:gap/gap.dart';
 
 class PatientHome extends StatefulWidget {
@@ -36,6 +36,7 @@ class _PatientHomeState extends State<PatientHome> {
       backgroundColor: AppColors.whiteColor,
       appBar: AppBar(
         centerTitle: true,
+        automaticallyImplyLeading: false,
         actions: [
           Padding(
             padding: const EdgeInsets.only(left: 10),

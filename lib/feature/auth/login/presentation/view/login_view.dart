@@ -1,6 +1,9 @@
 // feature/auth/login/presentation/view/login_view.dart
 
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/core/enums/user_type_enum.dart';
 import 'package:flutter_application/core/functions/dialogs.dart';
@@ -13,6 +16,7 @@ import 'package:flutter_application/core/widgets/custom_button.dart';
 import 'package:flutter_application/feature/auth/login/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_application/feature/auth/login/presentation/view/doctor_register_view.dart';
 import 'package:flutter_application/feature/auth/login/presentation/view/signup_view.dart';
+import 'package:flutter_application/feature/doctor/presentation/profile/page/profile_view.dart';
 import 'package:flutter_application/feature/patient/presentation/views/nav_bar/nav_bar_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -56,7 +60,18 @@ class _LoginViewState extends State<LoginView> {
               Navigator.pop(context);
               log("success");
               if (state.userType == UserType.doctor.toString()) {
-                pushReplacement(context, const DoctorRegisterView());
+                //if doctor complete his profile push to doctor home
+
+                final userDoc = FirebaseFirestore.instance
+                    .collection('doctors')
+                    .doc()
+                    .get();
+
+                if (userDoc == null) {
+                  pushReplacement(context, const DoctorRegisterView());
+                } else {
+                  pushReplacement(context, DoctorProfile());
+                }
               } else {
                 pushReplacement(context, const NavBarScreen());
               }

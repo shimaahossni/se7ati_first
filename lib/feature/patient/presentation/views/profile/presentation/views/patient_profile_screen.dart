@@ -8,9 +8,11 @@ import 'package:flutter_application/core/functions/navigation.dart';
 import 'package:flutter_application/core/utils/colors.dart';
 import 'package:flutter_application/core/utils/text_style.dart';
 import 'package:flutter_application/core/widgets/custom_button.dart';
+import 'package:flutter_application/feature/patient/presentation/views/profile/presentation/views/edit_patient_profile.dart';
 import 'package:flutter_application/feature/patient/presentation/views/profile/presentation/widget/appointment_history.dart';
-import 'package:flutter_application/feature/patient/presentation/views/profile/presentation/views/user_setting.dart';
+import 'package:flutter_application/feature/doctor/presentation/profile/page/user_setting.dart';
 import 'package:flutter_application/feature/patient/presentation/views/search/widget/tile_widget.dart';
+import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PatientProfileScreen extends StatefulWidget {
@@ -82,14 +84,15 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        foregroundColor: AppColors.whiteColor,
         backgroundColor: AppColors.blueColor,
         elevation: 0,
         title: const Text(
           'الحساب الشخصي',
+          style: TextStyle(color: AppColors.whiteColor),
         ),
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
+        centerTitle: true,
         actions: [
           IconButton(
             splashRadius: 20,
@@ -98,7 +101,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
               color: AppColors.whiteColor,
             ),
             onPressed: () {
-              push(context, const UserSettings());
+              push(context, const EditPatientProfile());
             },
           ),
         ],
@@ -111,7 +114,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                 .get(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-             //   print(snapshot.data);
+                //   print(snapshot.data);
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
@@ -188,7 +191,9 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                                       ? CustomButton(
                                           text: 'تعديل الحساب',
                                           height: 40,
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            push(context, EditPatientProfile());
+                                          },
                                         )
                                       : Text(
                                           userData['city'],
@@ -208,7 +213,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                           height: 25,
                         ),
                         Text(
-                          "نبذه تعريفيه",
+                          " التاريخ المرضي",
                           style: getBodyStyle(fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
@@ -221,10 +226,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Divider(),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        const Gap(30),
                         Text(
                           "معلومات التواصل",
                           style: getBodyStyle(fontWeight: FontWeight.w600),
@@ -245,9 +247,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                               TileWidget(
                                   text: userData['email'] ?? 'لم تضاف',
                                   icon: Icons.email),
-                              const SizedBox(
-                                height: 15,
-                              ),
+                              const Gap(20),
                               TileWidget(
                                   text: userData['phone'] == ''
                                       ? 'لم تضاف'
@@ -256,10 +256,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
                             ],
                           ),
                         ),
-                        const Divider(),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        const Gap(20),
                         Text(
                           "حجوزاتي",
                           style: getBodyStyle(fontWeight: FontWeight.w600),

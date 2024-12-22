@@ -1,4 +1,4 @@
-// feature/patient/presentation/views/profile/presentation/widget/appointment_history.dart
+// feature/doctor/presentation/appointments/appointments_list.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,14 +7,14 @@ import 'package:flutter_application/core/utils/text_style.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
-class MyAppointmentsHistory extends StatefulWidget {
-  const MyAppointmentsHistory({super.key});
+class MyAppointmentList extends StatefulWidget {
+  const MyAppointmentList({super.key});
 
   @override
-  State<MyAppointmentsHistory> createState() => _MyAppointmentsHistoryState();
+  State<MyAppointmentList> createState() => _MyAppointmentListState();
 }
 
-class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
+class _MyAppointmentListState extends State<MyAppointmentList> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? user;
 
@@ -22,13 +22,11 @@ class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
     user = _auth.currentUser;
   }
 
-  Future<void> deleteAppointment(
-    String docID,
-  ) {
+  Future<void> deleteAppointment(String docID) {
     return FirebaseFirestore.instance
         .collection('appointments')
         .doc('appointments')
-        .collection('all')
+        .collection('pending')
         .doc(docID)
         .delete();
   }
@@ -65,8 +63,7 @@ class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
                 deleteAppointment(
                   docID,
                 );
-                // Navigator.of(context).pop();
-                Navigator.pop(context);
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -77,11 +74,7 @@ class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
 
   _checkDiff(DateTime date) {
     var diff = DateTime.now().difference(date).inHours;
-    if (diff > 2) {
-      return true;
-    } else {
-      return false;
-    }
+    return diff > 2;
   }
 
   _compareDate(String date) {
@@ -98,26 +91,26 @@ class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
   void initState() {
     super.initState();
     _getUser();
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    if (user?.email == null) {
+    if (user == null) {
       return const Center(
-        child: Text("Please log in to view your appointments."),
+        child: CircularProgressIndicator(),
       );
     }
+
     return SafeArea(
-      child: FutureBuilder(
-        future: FirebaseFirestore.instance
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance
             .collection('appointments')
             .doc('appointments')
-            .collection('all')
-            .where('patientID', isEqualTo: '${user?.email}')
+            .collection('pending')
+            .where('doctorID', isEqualTo: user!.email)
             .orderBy('date', descending: false)
-            .get(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -126,18 +119,15 @@ class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
           return snapshot.data!.docs.isEmpty
               ? Center(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    //  mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset('assets/images/no_scheduled.svg',
-                          width: 250),
+                      SvgPicture.asset('assets/no_scheduled.svg', width: 250),
                       Text('لا يوجد حجوزات قادمة', style: getBodyStyle()),
                     ],
                   ),
                 )
               : ListView.builder(
                   scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: snapshot.data?.docs.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot document = snapshot.data!.docs[index];
@@ -250,6 +240,19 @@ class _MyAppointmentsHistoryState extends State<MyAppointmentsHistory> {
                                     ),
                                     const SizedBox(
                                       height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(Icons.location_on_rounded,
+                                            color: AppColors.blueColor,
+                                            size: 16),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          document['location'],
+                                        ),
+                                      ],
                                     ),
                                     const SizedBox(
                                       height: 10,

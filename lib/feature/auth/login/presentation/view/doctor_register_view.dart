@@ -15,6 +15,7 @@ import 'package:flutter_application/feature/auth/login/presentation/widget/docto
 import 'package:flutter_application/feature/auth/login/presentation/widget/doctor_register_button.dart';
 import 'package:flutter_application/feature/auth/login/presentation/widget/doctor_text.dart';
 import 'package:flutter_application/feature/doctor/presentation/doctor_home_reg.dart';
+import 'package:flutter_application/feature/doctor/presentation/profile/page/profile_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -46,7 +47,6 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
 
   File? file;
   String? profileUrl;
-
   String? userID;
 
   Future<void> _getUser() async {
@@ -82,7 +82,7 @@ class _DoctorRegisterViewState extends State<DoctorRegisterView> {
       listener: (context, state) {
         if (state is DoctorRegisterationSuccessstate) {
           Navigator.pop(context);
-          pushReplacement(context, const DoctorHomeReg());
+          pushReplacement(context, DoctorProfile());
         } else if (state is AuthErrorState) {
           Navigator.pop(context);
           showErrorDialog(context, state.error);
