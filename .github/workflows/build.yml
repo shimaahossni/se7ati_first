@@ -9,7 +9,6 @@ on:
 
 jobs:
   sonarqube:
-    name: SonarQube
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,13 +29,13 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.6'  # Updated to match Dart 3.5.4+ requirement
+          flutter-version: '3.32.1' 
 
       - name: Flutter pub get
         run: flutter pub get
 
       - name: Verify Dart SDK
-        run: dart --version  # Add version check for debugging
+        run: dart --version 
 
       - name: Run tests with coverage
         run: flutter test --coverage
