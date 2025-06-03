@@ -1,4 +1,4 @@
-// feature/patient/presentation/views/profile/presentation/views/user_details.dart
+// ../../../../git_app/se7ati_first/lib/feature/doctor/presentation/profile/page/user_details.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +42,7 @@ class _UserDetailsState extends State<UserDetails> {
         title: const Text('اعدادات الحساب',
             style: TextStyle(color: AppColors.whiteColor)),
       ),
+      
       body: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: StreamBuilder(
@@ -76,7 +77,7 @@ class _UserDetailsState extends State<UserDetails> {
                         alignment: Alignment.center,
                         contentPadding: const EdgeInsets.all(10),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(10),),
                         children: [
                           Form(
                             key: form,
