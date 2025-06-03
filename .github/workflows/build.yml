@@ -1,4 +1,5 @@
 name: Build
+
 on:
   push:
     branches:
@@ -9,19 +10,44 @@ on:
 jobs:
   sonarqube:
     name: SonarQube
-    runs-on: windows-latest
+    runs-on: ubuntu-latest   # Faster than windows-latest for Flutter
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0    # Needed for SonarQube analysis
 
-      - name: Install dependencies
-        run: npm install
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            ~/.dart_tool
+            .dart_tool
+          key: ${{ runner.os }}-pub-cache-${{ hashFiles('**/pubspec.yaml') }}
 
-      - name: Build project
-        run: npm run build
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'   
+
+      - name: Flutter pub get
+        run: flutter pub get
+
+      - name: Run tests with coverage (optional)
+        run: flutter test --coverage
+
+      - name: Build APK (optional)
+        run: flutter build apk --release
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      - name: Upload code coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
